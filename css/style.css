@@ -2,13 +2,31 @@ body {
 	background-color: #FAFAFA;
 }
 
+h4 {
+	text-align: center;
+	font-family: Verdana;
+	font-weight: unset;
+}
+
 #wrapper {
 	width: 860px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.controls>div {
+.point.male {
+	fill: #F22;
+}
+
+.point.female {
+	fill: #22F;
+}
+
+.point.both {
+	fill: #555;
+}
+
+#controls>.controlsBlock {
 	width: 250px;
 	position: relative;
 	float: left;
