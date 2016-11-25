@@ -27,9 +27,13 @@ h4 {
 }
 
 #controls>.controlsBlock {
-	width: 250px;
+	width: 430px;
 	position: relative;
 	float: left;
+}
+
+.locationSelect {
+	margin-left: 50px;
 }
 
 .axislabel {

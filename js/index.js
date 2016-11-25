@@ -42,37 +42,55 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			.text("Mean obesity prevelence");
 	
 	
-	var currentCountry = "Global";
-	var dataFilter = function(r) {
-		if (r.age_group_id === "38" && r.metric === "obese" && r.location_name === currentCountry) {
-			return {
-				location_name: r.location_name,
-				year: +r.year,
-				sex_id: +r.sex_id,
-				sex: r.sex,
-				mean: +r.mean,
-				lower: +r.lower,
-				upper: +r.upper
-			}
-		}
-	}
-	
-	var csvPath = "../data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
-	d3.csv(csvPath, dataFilter, function(error, data) {
-		d3.select("#loadingSpinner").attr("display", "none");
-		d3.select("#controls").style("display", "block");
-		
+	var drawGraph = function() {
 		g.append("g")
 			.attr("class", "points")
 			.selectAll("circle")
-			.data(data)
+			.data(d[firstCountry].maleData)
 			.enter().append("circle")
 				.attr("class", "point")
-				.classed("male", function(d) { return d.sex_id === 1; })
-				.classed("female", function(d) { return d.sex_id === 2; })
-				.classed("both", function(d) { return d.sex_id === 3; })
+				.classed("male", function(d) { return d.sex_id === "1"; })
+				.classed("female", function(d) { return d.sex_id === "2"; })
+				.classed("both", function(d) { return d.sex_id === "3"; })
 				.attr("r", "3px")
 				.attr("cx", function(d) { return x(d.year); })
 				.attr("cy", function(d) { return y(d.mean); });
+	}
+	
+	//Data setup
+	var d = {},
+		firstCountry = "Global",
+		firstGenders = {male: true, female: true, both: true},
+		secondCountry = "United States"
+		secondGenders = {male: true, female: true, both: true};
+	
+	
+	var csvPath = "../data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
+	d3.csv(csvPath, function(error, data) {
+		d3.select("#loadingSpinner").attr("display", "none");
+		d3.select("#controls").style("display", "block");
+		if (error != null) {
+			console.log(error);
+		} else {
+			for (r in data) {
+				if (!d.hasOwnProperty(data[r].location_name)) {
+					d[data[r].location_name] = {
+						name: data[r].location_name,
+						bothData: [],
+						maleData: [],
+						femaleData: []
+					}
+				} else {
+					if (data[r].sex == "male")
+						d[data[r].location_name].maleData.push(data[r])
+					else if (data[r].sex == "female")
+						d[data[r].location_name].femaleData.push(data[r])
+					else if (data[r].sex == "both")
+						d[data[r].location_name].bothData.push(data[r])
+				}
+			}
+			
+			drawGraph(data);
+		}
 	});
 });
