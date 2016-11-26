@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event) {		
+	var d = {},
+		curLocations = ["Global", "United States"],
+		curGenders = [{male: true, female: true, both: true}, {male: true, female: true, both: true}];
+	
 	var margin = {top: 20, left: 50, right: 20, bottom: 40},
 		width = 870 - margin.left - margin.right,
 		height = 520 - margin.top - margin.bottom,
@@ -8,12 +12,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	graph.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom);
 	
-	var male1G = g.append("g").attr("class", "points malepoints loc1points"),
-		female1G = g.append("g").attr("class", "points femalepoints loc1points"),
-	  both1G = g.append("g").attr("class", "points bothpoints loc1points"),
-		male2G = g.append("g").attr("class", "points malepoints loc2points"),
-		female2G = g.append("g").attr("class", "points femalepoints loc2points"),
-	  both2G = g.append("g").attr("class", "points bothpoints loc2points");
+	var pointGroups = [];
+	for (var loc in curLocations) {
+		pointGroups.push({});
+		for (var gdr in curGenders[loc]) {
+			var classes = "points " + gdr + "points loc" + loc + "points";
+			pointGroups[loc][gdr] = g.append("g").attr("class", classes);
+		}
+	}
 	
 	
 	//axes setup
@@ -54,22 +60,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			return document.getElementById(boxId).checked;
 		}
 		
-		if (checkGender("male1Box")) {
-			drawGraph(d[curLocations[0]].maleData, "male", male1G);
-		} else {
-			drawGraph([], "male", male1G);
+		for (var loc in curLocations) {
+			for (var gdr in curGenders[loc]) {
+				if (curGenders[loc][gdr]) {
+					drawGraph(d[curLocations[loc]][gdr + "Data"], gdr, pointGroups[loc][gdr]);
+				} else {
+					drawGraph([], gdr, pointGroups[loc][gdr]);
+				}
+			}
 		}
-		if (checkGender("female1Box")) {
-			drawGraph(d[curLocations[0]].femaleData, "female", female1G);
-		} else {
-			drawGraph([], "female", female1G);
-		}
-		if (checkGender("both1Box")) {
-			drawGraph(d[curLocations[0]].bothData, "both", both1G);
-		} else {
-			drawGraph([], "both", both1G);
-		}
-			
 	}
 	
 	var drawGraph = function(data, gender, genderPoints) {
@@ -85,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		circles.exit().remove();
 	}
 	
+	
 	var locationUpdate = function(evt) {
 		curLocations[+(evt.target.dataset.index)] = evt.target.value;
 		updateGraph();
@@ -96,12 +96,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		curGenders[index][targetGender] = evt.target.checked;
 		updateGraph();
 	}
-	
-	//Data setup
-	var d = {},
-		curLocations = ["Global", "United States"],
-		curGenders = [{male: true, female: true, both: true}, {male: true, female: true, both: true}];
-	
 	
 	var csvPath = "../data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
 	d3.csv(csvPath, function(error, data) {
@@ -138,11 +132,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				.text(function(d) { return d.location_name; });
 			options.exit();
 			
-			for (var i in curLocations) {
-				var ind = Number(i) + 1
-				document.getElementById("locationSelect" + ind).addEventListener("change", locationUpdate);
-				for (var g in curGenders[0]) {
-					document.getElementById(g + ind + "Box").addEventListener("change", genderUpdate);
+			for (var loc in curLocations) {
+				var ind = Number(loc),
+					selectElem = document.getElementById("locationSelect" + ind);
+				selectElem.value = curLocations[loc];
+				selectElem.addEventListener("change", locationUpdate);
+				
+				for (var gdr in curGenders[loc]) {
+					var boxElem = document.getElementById(gdr + ind + "Box");
+					boxElem.checked = curGenders[loc][gdr];
+					boxElem.addEventListener("change", genderUpdate);
 				}
 			}
 			
