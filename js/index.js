@@ -54,15 +54,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			return document.getElementById(boxId).checked;
 		}
 		
-		console.log("here");
 		if (checkGender("male1Box")) {
 			drawGraph(d[curLocations[0]].maleData, "male", male1G);
+		} else {
+			drawGraph([], "male", male1G);
 		}
 		if (checkGender("female1Box")) {
 			drawGraph(d[curLocations[0]].femaleData, "female", female1G);
+		} else {
+			drawGraph([], "female", female1G);
 		}
 		if (checkGender("both1Box")) {
 			drawGraph(d[curLocations[0]].bothData, "both", both1G);
+		} else {
+			drawGraph([], "both", both1G);
 		}
 			
 	}
@@ -89,8 +94,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var index = +(evt.target.dataset.index),
 			targetGender = evt.target.dataset.gender;
 		curGenders[index][targetGender] = evt.target.checked;
-		console.log(evt.target.checked);
-		console.log(curGenders[index][targetGender]);
 		updateGraph();
 	}
 	
