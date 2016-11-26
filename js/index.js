@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateGraph();
 	}
 	
-	var csvPath = "../data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
+	var csvPath = "./data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
 	d3.csv(csvPath, function(error, data) {
 		d3.select("#loadingSpinner").attr("display", "none");
 		d3.select("#controls").style("display", "block");
