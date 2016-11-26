@@ -15,30 +15,48 @@ h4 {
 }
 
 .loc0points .male {
-	fill: #F22;
-	stroke: #F22
+	fill: #71E34B;
+	stroke: #71E34B;
+}
+#location0Controls .male {
+	color: #71E34B;
 }
 .loc1points .male {
-	fill: #D25;
-	stroke: #D25;
+	fill: #4BBDE3;
+	stroke: #4BBDE3
+}
+#location1Controls .male {
+	color: #4BBDE3;
 }
 
 .loc0points .female {
-	fill: #22F;
-	stroke: #22F;
+	fill: #E3714B;
+	stroke: #E3714B;
+}
+#location0Controls .female {
+	color: #E3714B;
 }
 .loc1points .female {
-	fill: #32D;
-	stroke: #32D;
+	fill: #BD4BE3;
+	stroke: #BD4BE3;
+}
+#location1Controls .female {
+	color: #BD4BE3;
 }
 
 .loc0points .both {
-	fill: #555;
-	stroke: #555;
+	fill: #333;
+	stroke: #333;
+}
+#location1Controls .both{
+	color: #333;
 }
 .loc1points .both {
-	fill: #444;
-	stroke: #444;
+	fill: #777;
+	stroke: #777;
+}
+#location1Controls .both {
+	color: #777;
 }
 
 .line {
@@ -49,10 +67,19 @@ h4 {
 	width: 430px;
 	position: relative;
 	float: left;
+	font-family: Verdana;
 }
 
 .locationSelect {
-	margin-left: 50px;
+	margin-left: 60px;
+}
+
+.checkboxes {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	width: 200px;
+	font-size: 12px;
 }
 
 .axislabel {

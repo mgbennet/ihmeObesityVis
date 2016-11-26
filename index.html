@@ -10,7 +10,7 @@
 <body>
 	<div id="wrapper">
 		<div id="graphWrapper">
-			<h4>Mean adult obesity rates by country/region from 1990 to 2013</h4>
+			<h4>Comparison of mean adult obesity rates by country/region from 1990 to 2013</h4>
 			<svg id="graph" xmlns="http://www.w3.org/2000/svg">
 				<rect id="loadingSpinner" x="50" y="50" width="100" height="100" />
 			</svg>
@@ -18,21 +18,25 @@
 		<div id="controls" style="display:none">
 			<div class="controlsBlock" id="location0Controls">
 				<select id="locationSelect0" class="locationSelect" data-index="0"></select>
-				<input type="checkbox" id="male0Box" class="genderBox" data-index="0" data-gender="male"/>
-				<label for="male0Box">Male</label>
-				<input type="checkbox" id="female0Box" class="genderBox" data-index="0" data-gender="female"/>
-				<label for="female0Box">Female</label>
-				<input type="checkbox" id="both0Box" class="genderBox" data-index="0" data-gender="both"/>
-				<label for="both0Box">Both</label>
+				<div class="checkboxes">
+					<input type="checkbox" id="male0Box" class="genderBox male" data-index="0" data-gender="male"/>
+					<label for="male0Box" class="male">Male</label>
+					<input type="checkbox" id="female0Box" class="genderBox female" data-index="0" data-gender="female"/>
+					<label for="female0Box" class="female">Female</label>
+					<input type="checkbox" id="both0Box" class="genderBox both" data-index="0" data-gender="both"/>
+					<label for="both0Box" class="both">Both</label>
+				</div>
 			</div>
 			<div class="controlsBlock" id="location1Controls">
 				<select id="locationSelect1" class="locationSelect" data-index="1"></select>
-				<input type="checkbox" id="male1Box" class="genderBox" data-index="1" data-gender="male"/>
-				<label for="male1Box">Male</label>
-				<input type="checkbox" id="female1Box" class="genderBox" data-index="1" data-gender="female"/>
-				<label for="female1Box">Female</label>
-				<input type="checkbox" id="both1Box" class="genderBox" data-index="1" data-gender="both"/>
-				<label for="both1Box">Both</label>
+				<div class="checkboxes">
+					<input type="checkbox" id="male1Box" class="genderBox male" data-index="1" data-gender="male"/>
+					<label for="male1Box" class="male">Male</label>
+					<input type="checkbox" id="female1Box" class="genderBox female" data-index="1" data-gender="female"/>
+					<label for="female1Box" class="female">Female</label>
+					<input type="checkbox" id="both1Box" class="genderBox both" data-index="1" data-gender="both"/>
+					<label for="both1Box" class="both">Both</label>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {		
 	var d = {},
 		curLocations = ["Global", "United States"],
-		curGenders = [{male: true, female: true, both: true}, {male: true, female: true, both: true}];
+		curGenders = [{male: false, female: false, both: true}, {male: false, female: false, both: true}];
 	
 	var margin = {top: 20, left: 50, right: 20, bottom: 40},
 		width = 870 - margin.left - margin.right,
