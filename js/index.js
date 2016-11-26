@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	graph.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom);
 	
+	var male1G = g.append("g").attr("class", "points malepoints loc1points"),
+		female1G = g.append("g").attr("class", "points femalepoints loc1points"),
+	  both1G = g.append("g").attr("class", "points bothpoints loc1points"),
+		male2G = g.append("g").attr("class", "points malepoints loc2points"),
+		female2G = g.append("g").attr("class", "points femalepoints loc2points"),
+	  both2G = g.append("g").attr("class", "points bothpoints loc2points");
+	
 	
 	//axes setup
 	var x = d3.scaleLinear().rangeRound([0, width]),
@@ -42,33 +49,55 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			.text("Mean obesity prevelence");
 	
 	
-	var drawGraph = function(country1) {
-		g.append("g")
-			.attr("class", "points")
-			.selectAll("circle")
-			.data(d[country1].maleData)
-			.enter().append("circle")
-				.attr("class", "point")
-				.classed("male", function(d) { return d.sex_id === "1"; })
-				.classed("female", function(d) { return d.sex_id === "2"; })
-				.classed("both", function(d) { return d.sex_id === "3"; })
-				.attr("r", "3px")
-				.attr("cx", function(d) { return x(d.year); })
-				.attr("cy", function(d) { return y(d.mean); })
-			.exit();
+	var updateGraph = function() {
+		var checkGender = function(boxId) {
+			return document.getElementById(boxId).checked;
+		}
+		
+		console.log("here");
+		if (checkGender("male1Box")) {
+			drawGraph(d[curLocations[0]].maleData, "male", male1G);
+		}
+		if (checkGender("female1Box")) {
+			drawGraph(d[curLocations[0]].femaleData, "female", female1G);
+		}
+		if (checkGender("both1Box")) {
+			drawGraph(d[curLocations[0]].bothData, "both", both1G);
+		}
 			
 	}
 	
-	var update = function(evt) {
-		drawGraph(evt.target.value);
+	var drawGraph = function(data, gender, genderPoints) {
+		var circles = genderPoints.selectAll("circle")
+			.data(data)
+			.attr("cx", function(d) { return x(d.year); })
+			.attr("cy", function(d) { return y(d.mean); });
+		circles.enter().append("circle")
+				.attr("class", "point " + gender)
+				.attr("r", "3px")
+				.attr("cx", function(d) { return x(d.year); })
+				.attr("cy", function(d) { return y(d.mean); });
+		circles.exit().remove();
+	}
+	
+	var locationUpdate = function(evt) {
+		curLocations[+(evt.target.dataset.index)] = evt.target.value;
+		updateGraph();
+	}
+	
+	var genderUpdate = function(evt) {
+		var index = +(evt.target.dataset.index),
+			targetGender = evt.target.dataset.gender;
+		curGenders[index][targetGender] = evt.target.checked;
+		console.log(evt.target.checked);
+		console.log(curGenders[index][targetGender]);
+		updateGraph();
 	}
 	
 	//Data setup
 	var d = {},
-		firstCountry = "Global",
-		firstGenders = {male: true, female: true, both: true},
-		secondCountry = "United States"
-		secondGenders = {male: true, female: true, both: true};
+		curLocations = ["Global", "United States"],
+		curGenders = [{male: true, female: true, both: true}, {male: true, female: true, both: true}];
 	
 	
 	var csvPath = "../data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
@@ -86,14 +115,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 						maleData: [],
 						femaleData: []
 					}
-				} else {
-					if (data[r].sex == "male")
-						d[data[r].location_name].maleData.push(data[r])
-					else if (data[r].sex == "female")
-						d[data[r].location_name].femaleData.push(data[r])
-					else if (data[r].sex == "both")
-						d[data[r].location_name].bothData.push(data[r])
 				}
+				
+				if (data[r].sex == "male")
+					d[data[r].location_name].maleData.push(data[r])
+				else if (data[r].sex == "female")
+					d[data[r].location_name].femaleData.push(data[r])
+				else if (data[r].sex == "both")
+					d[data[r].location_name].bothData.push(data[r])
 			}
 			
 			//setup country select
@@ -106,10 +135,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				.text(function(d) { return d.location_name; });
 			options.exit();
 			
-			//select.on("change", update);
-			document.getElementById("locationSelect1").addEventListener("change", update);
+			for (var i in curLocations) {
+				var ind = Number(i) + 1
+				document.getElementById("locationSelect" + ind).addEventListener("change", locationUpdate);
+				for (var g in curGenders[0]) {
+					document.getElementById(g + ind + "Box").addEventListener("change", genderUpdate);
+				}
+			}
 			
-			drawGraph(firstCountry);
+			updateGraph();
 		}
 	});
 });
