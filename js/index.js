@@ -42,11 +42,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			.text("Mean obesity prevelence");
 	
 	
-	var drawGraph = function() {
+	var drawGraph = function(country1) {
 		g.append("g")
 			.attr("class", "points")
 			.selectAll("circle")
-			.data(d[firstCountry].maleData)
+			.data(d[country1].maleData)
 			.enter().append("circle")
 				.attr("class", "point")
 				.classed("male", function(d) { return d.sex_id === "1"; })
@@ -54,7 +54,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				.classed("both", function(d) { return d.sex_id === "3"; })
 				.attr("r", "3px")
 				.attr("cx", function(d) { return x(d.year); })
-				.attr("cy", function(d) { return y(d.mean); });
+				.attr("cy", function(d) { return y(d.mean); })
+			.exit();
+			
+	}
+	
+	var update = function(evt) {
+		drawGraph(evt.target.value);
 	}
 	
 	//Data setup
@@ -75,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			for (r in data) {
 				if (!d.hasOwnProperty(data[r].location_name)) {
 					d[data[r].location_name] = {
-						name: data[r].location_name,
+						location_name: data[r].location_name,
 						bothData: [],
 						maleData: [],
 						femaleData: []
@@ -90,7 +96,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				}
 			}
 			
-			drawGraph(data);
+			//setup country select
+			var dArray = Object.keys(d).map(function (key) {return d[key]});
+			var select = d3.selectAll(".locationSelect"),
+				options = select.selectAll("option").data(dArray);
+			
+			options.enter().append("option")
+				.attr("value", function(d) { return d.location_name; })
+				.text(function(d) { return d.location_name; });
+			options.exit();
+			
+			//select.on("change", update);
+			document.getElementById("locationSelect1").addEventListener("change", update);
+			
+			drawGraph(firstCountry);
 		}
 	});
 });
