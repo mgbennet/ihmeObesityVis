@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		for (var gdr in curGenders[loc]) {
 			var classes = "points " + gdr + "points loc" + loc + "points";
 			pointGroups[loc][gdr] = g.append("g").attr("class", classes);
+			pointGroups[loc][gdr].append("path").attr("class", "line");
 		}
 	}
 	
@@ -59,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var checkGender = function(boxId) {
 			return document.getElementById(boxId).checked;
 		}
-		
 		for (var loc in curLocations) {
 			for (var gdr in curGenders[loc]) {
 				if (curGenders[loc][gdr]) {
@@ -82,6 +82,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				.attr("cx", function(d) { return x(d.year); })
 				.attr("cy", function(d) { return y(d.mean); });
 		circles.exit().remove();
+		
+		var lineFunc = d3.line()
+			.x(function(d) { return x(d.year); })
+			.y(function(d) { return y(d.mean); });
+		var lines = genderPoints.select("path")
+      .datum(data)
+				.attr("class", "line " + gender)
+				.attr("d", lineFunc);
 	}
 	
 	

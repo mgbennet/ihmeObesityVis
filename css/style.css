@@ -14,16 +14,35 @@ h4 {
 	margin-right: auto;
 }
 
-.point.male {
+.loc0points .male {
 	fill: #F22;
+	stroke: #F22
+}
+.loc1points .male {
+	fill: #D25;
+	stroke: #D25;
 }
 
-.point.female {
+.loc0points .female {
 	fill: #22F;
+	stroke: #22F;
+}
+.loc1points .female {
+	fill: #32D;
+	stroke: #32D;
 }
 
-.point.both {
+.loc0points .both {
 	fill: #555;
+	stroke: #555;
+}
+.loc1points .both {
+	fill: #444;
+	stroke: #444;
+}
+
+.line {
+	fill-opacity: 0;
 }
 
 #controls>.controlsBlock {
