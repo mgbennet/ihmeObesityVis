@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		.append("text")
 			.attr("class", "axislabel")
 			.attr("x", -150)
-			.attr("y", -45)
+			.attr("y", -48)
 			.attr("dy", "0.71em")
 			.attr("transform", "rotate(-90)")
 			.text("Mean obesity prevelence");
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateGraph();
 	}
 	
-	var csvPath = "./data/FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
+	var csvPath = "./data/SORTED_FILTERED_IHME_GBD_2013_OBESITY_PREVALENCE_1990_2013_Y2014M10D08.CSV";
 	d3.csv(csvPath, function(error, data) {
 		d3.select("#loadingSpinner").attr("display", "none");
 		d3.select("#controls").style("display", "block");
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			options.enter().append("option")
 				.attr("value", function(d) { return d.location_name; })
 				.text(function(d) { return d.location_name; });
-			options.exit();
+			options.exit().remove();
 			
 			for (var loc in curLocations) {
 				var ind = Number(loc),

@@ -54,18 +54,18 @@ h4 {
 }
 
 .loc0points .both {
-	fill: #333;
-	stroke: #333;
+	fill: #339;
+	stroke: #339;
 }
-#location1Controls .both{
-	color: #333;
+#location0Controls .both{
+	color: #339;
 }
 .loc1points .both {
-	fill: #777;
-	stroke: #777;
+	fill: #C33;
+	stroke: #C33;
 }
 #location1Controls .both {
-	color: #777;
+	color: #C33;
 }
 
 .line {
@@ -96,4 +96,5 @@ h4 {
 .axislabel {
 	font-family: Verdana;
 	fill: #000;
+	font-size: 13px;
 }
