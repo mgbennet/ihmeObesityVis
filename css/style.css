@@ -98,3 +98,46 @@ h4 {
 	fill: #000;
 	font-size: 13px;
 }
+
+#description {
+	font-size: 14px;
+	padding: 4px 65px;
+	text-align: justify;
+}
+
+
+
+
+/* Loading animation */
+
+.bouncingBallPosition {
+	-webkit-animation: bounce 1.2s infinite;
+	animation: bounce 1.2s infinite;;
+	fill-opacity: 0;
+}
+
+.bouncingBall {
+	fill: #bea8ea;
+}
+
+@keyframes bounce {
+	0% {
+		fill-opacity: 1;
+		transform: translate(0px, 0px) scale(1, 1);
+		animation-timing-function: cubic-bezier(.65,.02,.98,.53);
+	}
+	43% {
+		transform: translate(0px, 15px) scale(.8, 1.2);
+	}
+	50% {
+		transform:  translate(0px, 15px) scale(1.5, .5);
+	}
+	57% {
+		transform: translate(0px, 15px) scale(.8, 1.2);
+		animation-timing-function: cubic-bezier(.02,.43,.35,.98);
+	}
+	100% {
+		fill-opacity: 1;
+		transform: translate(0px, 0px) scale(1, 1);
+	}
+}
