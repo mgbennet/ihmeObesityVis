@@ -72,24 +72,41 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 	
 	var drawGraph = function(data, gender, genderPoints) {
+		var transitionDuration = 400;
+		
 		var circles = genderPoints.selectAll("circle")
-			.data(data)
+			.data(data);
+		circles.transition()
+			.duration(transitionDuration)
 			.attr("cx", function(d) { return x(d.year); })
 			.attr("cy", function(d) { return y(d.mean); });
 		circles.enter().append("circle")
-				.attr("class", "point " + gender)
-				.attr("r", "3px")
-				.attr("cx", function(d) { return x(d.year); })
-				.attr("cy", function(d) { return y(d.mean); });
-		circles.exit().remove();
+			.attr("class", "point " + gender)
+			.attr("r", "3px")
+			.attr("cx", function(d) { return x(d.year); })
+			.attr("cy", height)
+			.transition()
+				.duration(transitionDuration)
+				.attr("cy", function(d) { return y(d.mean); })
+				.attr("opacity", 1);
+
+		circles.exit().
+			transition()
+				.duration(transitionDuration / 2)
+				.attr("cy", height)
+				.attr("opacity", .1)
+				.remove();
 		
 		var lineFunc = d3.line()
 			.x(function(d) { return x(d.year); })
 			.y(function(d) { return y(d.mean); });
 		var lines = genderPoints.select("path")
       .datum(data)
-				.attr("class", "line " + gender)
-				.attr("d", lineFunc);
+			.attr("class", "line " + gender);
+		lines.transition()
+			.duration(transitionDuration)
+			.attr("d", lineFunc)
+			
 	}
 	
 	
