@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		for (var gdr in curGenders[loc]) {
 			var classes = "points " + gdr + "points loc" + loc + "points";
 			pointGroups[loc][gdr] = g.append("g").attr("class", classes);
-			pointGroups[loc][gdr].append("path").attr("class", "line");
 		}
 	}
 	
@@ -54,6 +53,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			.attr("dy", "0.71em")
 			.attr("transform", "rotate(-90)")
 			.text("Mean obesity prevelence");
+	
+	//graph line setup
+	for (var loc in pointGroups) {
+		for (var gdr in pointGroups[loc]) {
+			var lineFunc = d3.line()
+				.x(function(d) { return x(d.year); })
+				.y(function(d) { return y(0); });
+			var straightLine = [];
+			for (var i = 1990; i <= 2013; i++) {
+				straightLine.push({year: i});
+			}
+			pointGroups[loc][gdr].append("path")
+				.attr("class", "line " + gdr)
+				.attr("d", lineFunc(straightLine));
+		}
+	}
+	
 	
 	
 	var updateGraph = function() {
@@ -97,16 +113,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				.attr("opacity", .1)
 				.remove();
 		
+		var opacity = 1;
 		var lineFunc = d3.line()
 			.x(function(d) { return x(d.year); })
 			.y(function(d) { return y(d.mean); });
+		if (data.length == 0) {
+			for (var i = 1990; i <= 2013; i++) {
+				data.push({
+					year: i,
+					mean: 0
+				});
+			}
+			opacity = 0;
+			transitionDuration = transitionDuration / 2;
+		}
 		var lines = genderPoints.select("path")
       .datum(data)
 			.attr("class", "line " + gender);
 		lines.transition()
 			.duration(transitionDuration)
 			.attr("d", lineFunc)
-			
+			.attr("opacity", opacity);
 	}
 	
 	
