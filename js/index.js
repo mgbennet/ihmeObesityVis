@@ -70,8 +70,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 	}
 	
-	
-	
 	var updateGraph = function() {
 		var checkGender = function(boxId) {
 			return document.getElementById(boxId).checked;
@@ -90,20 +88,47 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var drawGraph = function(data, gender, genderPoints) {
 		var transitionDuration = 400;
 		
-		var circles = genderPoints.selectAll("circle")
+		var circles = genderPoints.selectAll("g.point")
 			.data(data);
 		circles.transition()
 			.duration(transitionDuration)
-			.attr("cx", function(d) { return x(d.year); })
-			.attr("cy", function(d) { return y(d.mean); });
-		circles.enter().append("circle")
+				.attr("transform", function(d) { return "translate(" + x(d.year) + ", " + y(d.mean) + ")"; })
+		var newCircles = circles.enter().append("g")
 			.attr("class", "point " + gender)
+			.attr("transform", function(d) { return "translate(" + x(d.year) + ", " + height + ")"; });
+		newCircles.append("circle")
 			.attr("r", "3px")
-			.attr("cx", function(d) { return x(d.year); })
-			.attr("cy", height)
-			.transition()
+			.attr("cx", 0)
+			.attr("cy", 0);
+		var details = newCircles.append("g")
+			.attr("class", "pointDetails");
+		
+		details.append("rect")
+			.attr("x", -28)
+			.attr("y", -39)
+			.attr("width", 56)
+			.attr("height", 34);
+		var text = details.append("text")
+			.attr("x", -28)
+			.attr("y", -36)
+			.attr("dy", "0.51em");
+		text.append("tspan")
+			.text(function(d) { return "Year: " + d.year; });
+		text.append("tspan")
+			.attr("x", -28)
+			.attr("dy", "1em")
+			.text(function(d) { return "Mean: " + d.mean; });
+		text.append("tspan")
+			.attr("x", -28)
+			.attr("dy", "1em")
+			.text(function(d) { return "Upper: " + d.upper; });
+		text.append("tspan")
+			.attr("x", -28)
+			.attr("dy", "1em")
+			.text(function(d) { return "Lower: " + d.lower; });
+		newCircles.transition()
 				.duration(transitionDuration)
-				.attr("cy", function(d) { return y(d.mean); })
+				.attr("transform", function(d) { return "translate(" + x(d.year) + ", " + y(d.mean) + ")"; })
 				.attr("opacity", 1);
 
 		circles.exit().
